@@ -36,3 +36,9 @@ app.get('/lessons', async (req, res) => { // Handle GET requests to /lessons (as
   const lessons = await db.collection('lessons').find({}).toArray(); // Wait for all lesson documents, as an array
   res.json(lessons); // Send the array back to the client as JSON
 }); // End of the GET /lessons route
+// POST /orders: saves a new order to the orders collection
+app.post('/orders', async (req, res) => { // Handle POST requests to /orders
+    const order = req.body; // The order the front-end sent (parsed by express.json)
+    const result = await db.collection('orders').insertOne(order); // Save it as a new document
+    res.status(201).json({ message: 'Order saved', id: result.insertedId }); // 201 means "created"; send back the new id
+  }); // End of the POST /orders route
